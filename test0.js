@@ -61,7 +61,7 @@ function spanAdd(p) {
   return psplit.join('');
 }
 
-function spanAddg(p, no_of_init=3, least_word_length=3) {
+function spanAddg(p, no_of_init=3, least_word_length=3, max_word_length=25) {
   let psplit = splitStringWithTags(p.innerHTML, no_of_init);   
   if (psplit==null) return "// not changed";
 
@@ -70,12 +70,14 @@ function spanAddg(p, no_of_init=3, least_word_length=3) {
   
     words = psplit[i].split(' ');
     
+    //ToDo: skip brakets and other "" posibile non alphabet characters
     for (let j=0; j<words.length; j++){
-      if (words[j].length < least_word_length) continue;
+      if (words[j].length < least_word_length || words[j].length > max_word_length) continue;
       
-      var nw = '';
+      var nw = '', off = 0;
+      //while(word[])
       for (let a = 0; a < no_of_init && a < words[j].length; a++) 
-        nw = nw + `<m8r8s${a}>`+words[j][a]+`</m8r8s${a}>`;
+        nw = nw + `<m8r8s${a}>`+words[j][a+off]+`</m8r8s${a}>`;
         
       words[j] =  nw + `<m8r8s${no_of_init}>`+words[j].substr(no_of_init)+`</m8r8s${no_of_init}>`;
     }
@@ -97,6 +99,7 @@ function revert() {
 function setall(no_of_init=3, max_init_size=32, min_init_size=22, trail_size=12, drop_off='exp') {
   //drop off can be
   //  'exp' 'lin'
+  
   //create tags
   var tag = '<style>';
   for (let t = 0; t < no_of_init; t++) {
